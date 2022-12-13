@@ -57,3 +57,32 @@ test('renders learn react link', () => {
 - `waitFor` - 일정 기간 동안 기다려야 할 통과할 때까지 기다린다.
 
   <img alt="getBy, queryBy, findBy 비교" src="https://user-images.githubusercontent.com/89335307/206975978-70929b6b-c2bb-4cd3-8e96-d5cb595c3c95.png">
+
+### 📌 ESLint Testing Plugins
+
+- eslint에서 사용되는 테스팅용 플러그인
+  ```bash
+  npm i -D eslint-plugin-testing-library
+  npm i -D eslint-plugin-jest-dom
+  ```
+  - `testing-library` - render로 DOM을 그리는 부분
+  - `jest-dom` - expect-matcher로 테스트하는 부분
+- 내부 설정
+
+  ```json
+  {
+    // 플러그인 추가
+    "plugins": ["testing-library", "jest-dom"], // 플러그인 이름의 es-lint를 제외하고 작성
+
+    // 사용할 규칙 추가
+    "extends": [
+      "react-app",
+      "react-app/jest",
+      "plugin:testing-library/react",
+      "plugin:jest-dom/recommended"
+    ],
+
+    // 규칙을 변경할 때
+    "rule": []
+  }
+  ```
