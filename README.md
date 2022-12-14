@@ -86,3 +86,109 @@ test('renders learn react link', () => {
     "rule": []
   }
   ```
+
+### 📌 FireEvent API
+
+- 유저가 발생시키는 액션(이벤트)에 대한 테스트를 해야 할 때 사용한다.
+- 그러나 대부분의 경우 user-event로 처리한다.
+
+### 📌 TDD를 이용한 Counter App 만들기
+
+```javascript
+// Counter는 0부터 시작한다.
+
+// App.js
+import { useState } from 'react';
+
+const App = () => {
+  const [count, setCount] = useState(0);
+  const [disabled, setDisabled] = useState(false);
+
+  return (
+    <>
+      <div data-testid="counter">{count}</div>
+      <div>
+        <button
+          type="button"
+          data-testid="minus-button"
+          onClick={() => setCount((prev) => prev - 1)}
+          disabled={disabled}
+        >
+          -
+        </button>
+        <button
+          type="button"
+          data-testid="plus-button"
+          onClick={() => setCount((prev) => prev + 1)}
+          disabled={disabled}
+        >
+          +
+        </button>
+      </div>
+      <div>
+        <button
+          style={{ backgroundColor: 'blue', color: '#fff' }}
+          type="button"
+          data-testid="on-off-button"
+          onClick={() => setDisabled(true)}
+        >
+          on/off
+        </button>
+      </div>
+    </>
+  );
+};
+
+export default App;
+
+// App.test.js
+import { render, screen } from '@testing-library/react';
+import App from './App';
+
+test('counter starts at 0', () => {
+  // App 컴포넌트를 렌더링
+  render(<App />);
+
+  // screen object를 이용해서 counter element에 접근
+  const counterElement = screen.getByTestId('counter');
+
+  // id가 counter인 엘리먼트의 텍스트가 0인지 테스트
+  expect(counterElement).toHaveTextContent(0);
+});
+
+test('minus button has correct text', () => {
+  render(<App />);
+
+  const buttonElement = screen.getByTestId('minus-button');
+
+  expect(buttonElement).toHaveTextContent('-');
+});
+
+test('plus button has correct text', () => {
+  render(<App />);
+
+  const buttonElement = screen.getByTestId('plus-button');
+
+  expect(buttonElement).toHaveTextContent('+');
+});
+
+test('+ button is pressed, counter changes to 1', () => {
+  render(<App />);
+
+  const buttonElement = screen.getByTestId('plus-button');
+  fireEvent.click(buttonElement);
+
+  const counterElement = screen.getByTestId('counter');
+
+  expect(counterElement).toHaveTextContent(1);
+});
+
+test('on/off button has blue color', () => {
+  render(<App />);
+
+  const buttonElement = screen.getByTestId('on-off-button');
+
+  // 해당 스타일을 가지고 있는지 테스트
+  expect(buttonElement).toHaveStyle({ backgroundColor: 'blue' });
+});
+```
