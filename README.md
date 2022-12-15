@@ -192,3 +192,13 @@ test('on/off button has blue color', () => {
   expect(buttonElement).toHaveStyle({ backgroundColor: 'blue' });
 });
 ```
+
+### 📌 GitHub Action을 이용해서 AWS S3로 자동 배포 설정 해보기
+
+1. AWS 버킷 생성
+2. 해당 버킷의 속성 탭 -> 설정 -> 정적 웹 사이트 호스팅 편집 -> 정적 웹 사이트 호스팅 활성화 인덱스 문서(기본 페이지 html) 작성 후 저장
+3. 권한을 설정해주기 위해서 버킷의 권한 탭 -> 퍼블릭 액세스 차단(버킷 설정) -> 모든 퍼블릭 액세스 차단 해제 후 저장
+4. 버킷 정책 편집 -> 정책 작성([버킷 정책 예제](https://docs.aws.amazon.com/ko_kr/AmazonS3/latest/userguide/example-bucket-policies.html)) 후 저장
+5. 해당 GitHub Repository의 Actions 탭에서 Node.js의 configure 선택
+6. node.js.yml 파일에 브랜치와 Node.js 버전 등을 확인 후 규칙 작성(`참고` : [awact/s3-action](https://github.com/awact/s3-action))
+7. GitHub Repository Setting 탭 -> Secret -> Actions -> New Repository Secret -> New Secret에서 AWS ACCESS KEY, SECRET ACCESS KEY 등을 환경 변수로 사용하기 위해 저장한다.
